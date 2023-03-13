@@ -5,17 +5,23 @@ import data from "../components/data/data.json";
 function App() {
   const [phrases, setPhrases] = useState(data);
   const [search, setSearch] = useState("");
-  const [selectCharacter, setselectCharacter] = ('Todos');
+  const [selectCharacter, setSelectCharacter] = useState('Todos');
 
   const renderListPhrases = () => {
     return data
+      .filter((eachPhrase, i)=>{
+        
+        if (selectCharacter === 'Todos'){
+          return true
+          } else
+            return eachPhrase.character.includes(selectCharacter)
+
+      })
       .filter((eachPhrase) => {
         return (
-        eachPhrase.quote.toLowerCase().includes(search.toLowerCase()) &&
-        eachPhrase.character.includes(selectCharacter())
+        eachPhrase.quote.toLowerCase().includes(search.toLowerCase())
         );
       })
-
       .map((eachPhrase, i) => (
         <li key={i}>
           {eachPhrase.quote} - {eachPhrase.character}
@@ -28,8 +34,8 @@ function App() {
   };
 
   const handleCharacter =(ev)=>{
-    setselectCharacter(ev.target.value);
-    setPhrases([...data]);
+    setSelectCharacter(ev.target.value);
+    
   }
 
   return (
@@ -47,16 +53,16 @@ function App() {
           value={search}
         />
         <label>Filtra por personaje</label>
-        <select name='character' onChange={handleCharacter}>
-          <option>Todos</option>
-          <option>Ross</option>
-          <option>Monica</option>
-          <option>Joey</option>
-          <option>Phoebe</option>
-          <option>Chandler</option>
-          <option>Rachel</option>
+        <select name='character' onChange={handleCharacter} value={selectCharacter}>
+          <option value='Todos'>Todos</option>
+          <option value='Ross'>Ross</option>
+          <option value='Monica'>Monica</option>
+          <option value='Joey'>Joey</option>
+          <option value='Phoebe'>Phoebe</option>
+          <option value='Chandler'>Chandler</option>
+          <option value='Rachel'>Rachel</option>
         </select>
-        <lu>{renderListPhrases()}</lu>
+        <ul>{renderListPhrases()}</ul>
       </main>
     </div>
   );

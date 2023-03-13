@@ -6,6 +6,9 @@ function App() {
   const [phrases, setPhrases] = useState(data);
   const [search, setSearch] = useState("");
   const [selectCharacter, setSelectCharacter] = useState('Todos');
+  // const [newPhrase, setNewPhrase] = useState [
+
+  // ]
 
   const renderListPhrases = () => {
     return data
@@ -63,6 +66,30 @@ function App() {
           <option value='Rachel'>Rachel</option>
         </select>
         <ul>{renderListPhrases()}</ul>
+        <h2>Añadir una nueva frase</h2>
+
+        <from>
+        <label>Frase</label>
+        <input
+          type="text"
+          autoComplete="off"
+          name="phrase"
+          placeholder="Escribe aquí"
+        />
+        <label>Personaje</label>
+        <input
+          type="text"
+          autoComplete="off"
+          name="character"
+          placeholder="Escribe aquí"
+        />
+        <input
+          type="submit"
+          autoComplete="off"
+          name="search"
+          value="Añadir nueva frase"
+        />
+        </from>
       </main>
     </div>
   );

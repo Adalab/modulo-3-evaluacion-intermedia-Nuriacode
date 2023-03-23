@@ -10,6 +10,8 @@ function App() {
 
   // ]
 
+  // i
+
   const renderListPhrases = () => {
     return data
       .filter((eachPhrase, i)=>{

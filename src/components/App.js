@@ -1,26 +1,27 @@
 import "../styles/App.scss";
-import { useState } from "react";
-import data from "../components/data/data.json";
+import { useEffect, useState } from "react";
+import getData from '../../src/components/data/api.js'
 
 function App() {
-  const [phrases, setPhrases] = useState(data);
+  const [dataList, setDataList] = useState([])
   const [search, setSearch] = useState("");
   const [selectCharacter, setSelectCharacter] = useState('Todos');
-  // const [newPhrase, setNewPhrase] = useState [
+  const [newPhrase, setNewPhrase] = useState ({quote:"", character:""})
 
-  // ]
-
-  // i
+  useEffect(()=>{
+    getData().then(response=>{
+      setDataList(response)
+    })
+  },[])
 
   const renderListPhrases = () => {
-    return data
+    return dataList
       .filter((eachPhrase, i)=>{
         
         if (selectCharacter === 'Todos'){
           return true
           } else
             return eachPhrase.character.includes(selectCharacter)
-
       })
       .filter((eachPhrase) => {
         return (
@@ -43,13 +44,29 @@ function App() {
     
   }
 
+  const handleInputsNewPhrase = (ev) =>{
+    const inputValue = ev.target.value;
+    const inputName = ev.targe.name;
+    setNewPhrase({...newPhrase, [inputName]: inputValue})
+  
+  }
+
+  const handleClick = (ev) =>{
+    ev.preventDefaul();
+    if (!(newPhrase.quote === '' || newPhrase.character === '')) {
+      setDataList([...dataList, newPhrase]);
+    }
+
+  }
+
   return (
     <div className="App">
       <main>
         <h1>Frases de Friends</h1>
         <h2>Listado de frases</h2>
-        <label>Filtra por frase</label>
+        <label htmlFor="searchPhrase">Filtra por frase</label>
         <input
+          id="searchPhrase"
           type="search"
           autoComplete="off"
           name="search"
@@ -57,8 +74,8 @@ function App() {
           onInput={handleFilter}
           value={search}
         />
-        <label>Filtra por personaje</label>
-        <select name='character' onChange={handleCharacter} value={selectCharacter}>
+        <label htmlFor="searchName">Filtra por personaje</label>
+        <select id="searchName" name='character' onChange={handleCharacter} value={selectCharacter}>
           <option value='Todos'>Todos</option>
           <option value='Ross'>Ross</option>
           <option value='Monica'>Monica</option>
@@ -71,25 +88,32 @@ function App() {
         <h2>Añadir una nueva frase</h2>
 
         <from>
-        <label>Frase</label>
+        <label htmlFor="quote">Frase</label>
         <input
+          id= "quote"
           type="text"
           autoComplete="off"
           name="phrase"
           placeholder="Escribe aquí"
+          value={newPhrase.quote}
+          onChange={handleInputsNewPhrase}
         />
-        <label>Personaje</label>
+        <label htmlFor="character">Personaje</label>
         <input
+          id="character"
           type="text"
           autoComplete="off"
           name="character"
           placeholder="Escribe aquí"
+          value={newPhrase.character}
+          onChange={handleInputsNewPhrase}
         />
         <input
           type="submit"
           autoComplete="off"
           name="search"
           value="Añadir nueva frase"
+          onClick={handleClick}
         />
         </from>
       </main>
